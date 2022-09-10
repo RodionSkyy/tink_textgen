@@ -9,6 +9,7 @@ class Generator_text:
     def __init__(self, filename):
         text = open(filename, 'r', encoding='utf-8').read()
         formatted_text = re.sub('[^а-яё,.!?]', ' ', text.lower())
+        # formatted_text = re.sub('[^a-z,.!?]', ' ', text.lower()) # english text
         self.splitted_text = re.split('\\s+', formatted_text)
 
     def fit(self):
