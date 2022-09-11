@@ -11,7 +11,8 @@ class Generator_text:
         formatted_text = re.sub('[^а-яё,.!?]', ' ', text.lower())
         # formatted_text = re.sub('[^a-z,.!?]', ' ', text.lower()) # english text
         self.splitted_text = re.split('\\s+', formatted_text)
-
+    
+    # биграммная модель
     def fit(self):
         result = {k: [] for k in self.splitted_text[:-1]}
         for i in range(len(self.splitted_text) - 1):
@@ -20,7 +21,8 @@ class Generator_text:
 
         with open('model.pkl', 'wb') as data:
             pickle.dump(result, data, protocol=pickle.HIGHEST_PROTOCOL)
-
+    
+    # генерация текста
     def generate(self, length):
         with open('model.pkl', 'rb') as data:
             bigrams = pickle.load(data)
@@ -30,11 +32,12 @@ class Generator_text:
         for i in range(length):
             generated += ''.join(next_word + " ")
             next_word = random.choice(bigrams[next_word])
-            while next_word not in list(bigrams.keys()):
+            while next_word not in list(bigrams.keys()): # избежание ошибок
                 next_word = random.choice(list(bigrams.keys()))
         print(generated)
 
 
+# Запуск программы
 def start():
     Arguments = argparse.ArgumentParser()
     Arguments.add_argument("-f")
